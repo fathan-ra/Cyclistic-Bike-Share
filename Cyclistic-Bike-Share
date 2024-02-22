@@ -1,0 +1,40 @@
+--CREATE TABLE 
+CREATE TABLE cyclistic_trip (
+	ride_id	varchar(50),
+	rideable_type varchar(20),
+	started_at timestamp,
+	ended_at timestamp,
+	start_station_name varchar(100),
+	start_station_id varchar(50),
+	end_station_name varchar(100),
+	end_station_id	varchar(50),
+	start_lat numeric,	
+	start_lng numeric,
+	end_lat	numeric,
+	end_lng numeric,	
+	member_casual varchar(50)
+)
+
+--INSERTING ALL datasets
+
+-- CLEANING DATA
+--Removing column 
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN start_station_id;
+
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN end_station_id;
+
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN start_lat;
+
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN start_lng;
+
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN end_lat;
+
+ALTER TABLE public.cyclistic_trip
+DROP COLUMN end_lng;
+
+-- ANALYZING DATA
