@@ -59,6 +59,21 @@ FROM public.tripdata_all
 GROUP BY ride_id
 HAVING count(*) > 1;
 
+-- CHECK MISSING DATA
+SELECT * 
+FROM tripdata_all
+WHERE start_station_name OR end_station_name IS NULL;
 
+SELECT * 
+FROM tripdata_all
+WHERE started_at OR ended_at IS NULL; 
+
+--MANIPULATING DAA
+--CREATE ride_duration COLUMN
+ALTER TABLE public.tripdata_all
+ADD ride_duration interval;
+
+UPDATE public.tripdata_all
+SET 
 
 -- ANALYZING DATA
