@@ -91,10 +91,13 @@ WHERE end_station_name IS NULL;
 
 --MANIPULATING DATA
 --CREATE ride_duration COLUMN
-ALTER TABLE public.tripdata_all
-ADD ride_duration interval;
+ALTER TABLE public.tripdata_all 
+ADD COLUMN ride_duration INTERVAL GENERATED ALWAYS AS (ended_at - started_at) STORED;
 
-UPDATE public.tripdata_all
-SET 
+EXTRACT ride_duration into ride_min
+
+--DELETE DATA THAT HAS LESS THAN ONE MINUTE DURATION
+DELETE FROM public.tripdata_all
+WHERE 
 
 -- ANALYZING DATA
