@@ -37,11 +37,14 @@ DROP COLUMN end_lat;
 ALTER TABLE public.tripdata_all
 DROP COLUMN end_lng;
 
+--RESULTS -> COLUMN DECREASES INTO 7 COLUMN
+
 -- CHECKING FOR ERRORS IN USER AND BIKE TYPES
-SELECT(DISTINCT(rideable_type))
+
+SELECT DISTINCT(rideable_type)
 FROM public.tripdata_all;
 
-SELECT(DISTINCT(member_casual))
+SELECT DISTINCT(member_casual)
 FROM public.tripdata_all;
 
 -- CHECKING FOR DUPLICATES
@@ -62,13 +65,31 @@ HAVING count(*) > 1;
 -- CHECK MISSING DATA
 SELECT * 
 FROM tripdata_all
-WHERE start_station_name OR end_station_name IS NULL;
+WHERE start_station_name IS NULL;
 
 SELECT * 
 FROM tripdata_all
-WHERE started_at OR ended_at IS NULL; 
+WHERE end_station_name IS NULL;
 
---MANIPULATING DAA
+SELECT * 
+FROM tripdata_all
+WHERE started_at IS NULL;
+
+SELECT * 
+FROM tripdata_all
+WHERE ended_at IS NULL; 
+
+--DELETE rows for blank values in start_station_name and end_station_name column 
+DELETE FROM public.tripdata_all
+WHERE start_station_name IS NULL;
+--TOTAL 875716 rows deleted
+
+DELETE FROM public.tripdata_all
+WHERE end_station_name IS NULL;
+--TOTAL 512092 rows deleted
+--there is 4332069 rows remaining  
+
+--MANIPULATING DATA
 --CREATE ride_duration COLUMN
 ALTER TABLE public.tripdata_all
 ADD ride_duration interval;
