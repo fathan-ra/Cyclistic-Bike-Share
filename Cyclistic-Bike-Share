@@ -1,5 +1,5 @@
 --CREATE TABLE 
-CREATE TABLE cyclistic_trip (
+CREATE TABLE tripdata_all (
 	ride_id	varchar(50),
 	rideable_type varchar(20),
 	started_at timestamp,
@@ -19,22 +19,46 @@ CREATE TABLE cyclistic_trip (
 
 -- CLEANING DATA
 --Removing column 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN start_station_id;
 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN end_station_id;
 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN start_lat;
 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN start_lng;
 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN end_lat;
 
-ALTER TABLE public.cyclistic_trip
+ALTER TABLE public.tripdata_all
 DROP COLUMN end_lng;
+
+-- CHECKING FOR ERRORS IN USER AND BIKE TYPES
+SELECT(DISTINCT(rideable_type))
+FROM public.tripdata_all;
+
+SELECT(DISTINCT(member_casual))
+FROM public.tripdata_all;
+
+-- CHECKING FOR DUPLICATES
+SELECT COUNT(DISTINCT(start_station_name)), COUNT(DISTINCT(end_station_name))
+FROM public.tripdata_all
+
+SELECT DISTINCT(start_station_name)
+FROM public.tripdata_all;
+
+SELECT DISTINCT(end_station_name)
+FROM public.tripdata_all;
+
+SELECT ride_id, count(*)
+FROM public.tripdata_all
+GROUP BY ride_id
+HAVING count(*) > 1;
+
+
 
 -- ANALYZING DATA
