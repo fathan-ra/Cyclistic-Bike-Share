@@ -126,4 +126,29 @@ FROM public.tripdata_all
  GROUP BY member_casual; 
 -- TOTAL casual 1501916 member 2738307
 
--- 
+-- casual vs member average ride duration
+SELECT member_casual, avg(ride_duration)  
+FROM public.tripdata_all
+GROUP BY member_casual;
+-- AVERAGE ride duration casual 23:11 member 12:22
+
+-- ADD day of the week, time of the day, and month of the year 
+ALTER TABLE public.tripdata_all
+ADD day_of_the_week INT
+
+UPDATE public.tripdata_all
+SET day_of_the_week = EXTRACT(DAY FROM started_at); 
+
+-- casual vs member average ride duration SORT by day of the week
+SELECT member_casual, avg(ride_duration)
+FROM public.tripdata_all
+GROUP BY member_casual 
+SORT BY day of the week
+
+-- casual vs member group start time SORT by time of the day
+
+-- casual vs member ride count days SORT by day of the week
+
+-- casual vs member group start time SORT by day of the week
+
+-- casual vs member ride count days SORT by month of the year
