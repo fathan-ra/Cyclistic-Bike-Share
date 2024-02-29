@@ -49,7 +49,7 @@ FROM public.tripdata_all;
 
 -- CHECKING FOR DUPLICATES
 SELECT COUNT(DISTINCT(start_station_name)), COUNT(DISTINCT(end_station_name))
-FROM public.tripdata_all
+FROM public.tripdata_all;
 
 SELECT DISTINCT(start_station_name)
 FROM public.tripdata_all;
@@ -65,11 +65,11 @@ HAVING count(*) > 1;
 -- CHECK MISSING DATA
 SELECT * 
 FROM tripdata_all
-WHERE start_station_name IS NULL;
+WHERE ride_id IS NULL;
 
 SELECT * 
 FROM tripdata_all
-WHERE end_station_name IS NULL;
+WHERE rideable_type IS NULL;
 
 SELECT * 
 FROM tripdata_all
@@ -79,6 +79,18 @@ SELECT *
 FROM tripdata_all
 WHERE ended_at IS NULL; 
 
+SELECT * 
+FROM tripdata_all
+WHERE start_station_name IS NULL;
+
+SELECT * 
+FROM tripdata_all
+WHERE end_station_name IS NULL;
+
+SELECT * 
+FROM tripdata_all
+WHERE member_casual IS NULL; 
+
 --DELETE rows for blank values in start_station_name and end_station_name column 
 DELETE FROM public.tripdata_all
 WHERE start_station_name IS NULL;
@@ -86,7 +98,7 @@ WHERE start_station_name IS NULL;
 
 DELETE FROM public.tripdata_all
 WHERE end_station_name IS NULL;
---TOTAL 512092 rows deleted
+--TOTAL 512092 rows were deleted
 --there is 4332069 rows remaining  
 
 --MANIPULATING DATA
@@ -94,10 +106,24 @@ WHERE end_station_name IS NULL;
 ALTER TABLE public.tripdata_all 
 ADD COLUMN ride_duration INTERVAL GENERATED ALWAYS AS (ended_at - started_at) STORED;
 
-EXTRACT ride_duration into ride_min
+--EXTRACT ride_duration into ride_minute
+ALTER TABLE public.tripdata_all 
+add ride_minutes INT;
+
+UPDATE public.tripdata_all
+SET ride_minutes = EXTRACT(MINUTE FROM ride_duration);
 
 --DELETE DATA THAT HAS LESS THAN ONE MINUTE DURATION
 DELETE FROM public.tripdata_all
-WHERE 
+WHERE ride_minutes < 1;
+--TOTAL 91846 rows were deleted
+--there is 4240223 rows remaining
 
 -- ANALYZING DATA
+-- casual vs member total ride count 
+SELECT member_casual, count(ride_id)
+FROM public.tripdata_all
+ GROUP BY member_casual; 
+-- TOTAL casual 1501916 member 2738307
+
+-- 
