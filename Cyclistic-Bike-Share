@@ -139,6 +139,13 @@ ADD day_of_the_week INT
 UPDATE public.tripdata_all
 SET day_of_the_week = EXTRACT(DAY FROM started_at); 
 
+-- test for another alternatives
+ALTER TABLE public.tripdata_all
+ADD day text
+
+UPDATE public.tripdata_all
+SET day = to_char(started_at,'Dy')
+
 -- casual vs member average ride duration SORT by day of the week
 SELECT member_casual, avg(ride_duration)
 FROM public.tripdata_all
